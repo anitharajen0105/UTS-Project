@@ -1,0 +1,71 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:2Wv0dGoFTUah@ep-calm-lab-a5v0tdi7.us-east-2.aws.neon.tech/uts?sslmode=require"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  bookings Booking[] // This establishes a one-to-many relationship
+}
+
+model Train {
+  id             Int      @id @default(autoincrement())
+  trainNumber    String
+  date           DateTime
+  arrivalTime    DateTime
+  target         String
+  count          Int
+  stationId      Int
+  station        Station   @relation(fields: [stationId], references: [id])
+  coachGroup1    Int?
+  coachGroup2    Int?
+  coachGroup3    Int?
+  coachGroup4    Int?
+  trainName      String
+  basePrice      Float
+  adjustedPrice  Float
+  gstTaxAmount   Float
+  finalPrice     Float
+
+  // Inverse relations for bookings
+  departureBookings Booking[] @relation("DepartureTrain")
+  arrivalBookings   Booking[] @relation("ArrivalTrain")
+}
+
+model Station {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  trains   Train[] // This establishes a one-to-many relationship
+
+  // Reverse relations for bookings
+  departureBookings Booking[] @relation("DepartureStation")
+  arrivalBookings   Booking[] @relation("ArrivalStation")
+}
+
+model Booking {
+  id                    Int       @id @default(autoincrement())
+  userId                Int
+  departureTrainId      Int
+  arrivalTrainId        Int
+  fromStationId         Int
+  toStationId           Int
+  totalFare             Float
+  createdAt            DateTime  @default(now())
+
+  user                 User      @relation(fields: [userId], references: [id])
+
+  // Relations to the trains (using trainId)
+  departureTrain       Train     @relation("DepartureTrain", fields: [departureTrainId], references: [id])
+  arrivalTrain         Train     @relation("ArrivalTrain", fields: [arrivalTrainId], references: [id])
+
+  // Relations to the stations (using stationId)
+  fromStation          Station   @relation("DepartureStation", fields: [fromStationId], references: [id])
+  toStation            Station   @relation("ArrivalStation", fields: [toStationId], references: [id])
+}

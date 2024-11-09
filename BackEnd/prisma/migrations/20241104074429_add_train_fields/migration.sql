@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Train" ADD COLUMN     "adjustedPrice" DOUBLE PRECISION,
+ADD COLUMN     "basePrice" DOUBLE PRECISION,
+ADD COLUMN     "finalPrice" DOUBLE PRECISION,
+ADD COLUMN     "gstTaxAmount" DOUBLE PRECISION,
+ADD COLUMN     "trainName" TEXT;
