@@ -1,0 +1,9 @@
+{
+  "appId": "com.utsapp.utsapp",
+  "appName": "uts-app",
+  "webDir": "dist",
+  "server": {
+    "url": "https://utsapplication.vercel.app",
+    "cleartext": true
+  }
+}
