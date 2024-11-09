@@ -8,8 +8,15 @@ import HomePage from './Pages/HomePage'
 import BookingConfirmation from './components/NormalBoooking/BookingConfirmation'
 import BookingHistory from './components/NormalBoooking/BookingHistory'
 import TrainCrowdPrediction from './components/CrowdPrediction/CrowdPrediction'
+import { StatusBar } from '@capacitor/status-bar';
 
 const App = () => {
+
+  useEffect(() => {
+    // Hide the status bar
+    StatusBar.hide();
+  }, []);
+
   return (
     <>
      <Router>
